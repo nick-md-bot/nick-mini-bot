@@ -44,7 +44,7 @@ async (conn, mek, m, { from, pushname, reply }) => {
             {
                 video: { url: config.MENU_VIDEO },
                 caption: menu,
-                gifPlayback: false
+                gifPlayback: ture
             },
             { quoted: mek }
         )
