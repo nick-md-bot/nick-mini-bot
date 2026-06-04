@@ -26,7 +26,10 @@ async (conn, mek, m, {
         await conn.sendMessage(
             from,
             {
-                text: aliveMsg
+                image: {
+                    url: "https://xenocdn.xenocdn.workers.dev/265d504c.jpeg"
+                },
+                caption: aliveMsg
             },
             { quoted: mek }
         );
