@@ -1,5 +1,5 @@
+```js
 const { cmd } = require('../command')
-const fetch = require('node-fetch')
 
 cmd({
     pattern: "insta",
@@ -19,7 +19,7 @@ async (conn, mek, m, { from, q, reply }) => {
 
         const data = await res.json()
 
-        if (!data.status) {
+        if (!data.status || !data.data) {
             return reply("*Download Failed!*")
         }
 
@@ -55,3 +55,4 @@ async (conn, mek, m, { from, q, reply }) => {
         reply(`${e}`)
     }
 })
+```
