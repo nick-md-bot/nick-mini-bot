@@ -6,7 +6,6 @@ const {
 const {
     getBuffer
 } = require("./pluginsCore");
-const plugins = require("../lib");
 const config = require("../config.js");
 const font = require("@viper-x/fancytext");
 const menust = config.MENU_FONT;
