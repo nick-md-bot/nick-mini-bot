@@ -1,4 +1,16 @@
+const config = require('../config')
 const { cmd } = require('../command')
+
+function runtime(seconds) {
+    seconds = Number(seconds)
+
+    const d = Math.floor(seconds / (3600 * 24))
+    const h = Math.floor(seconds % (3600 * 24) / 3600)
+    const m = Math.floor(seconds % 3600 / 60)
+    const s = Math.floor(seconds % 60)
+
+    return `${d}d ${h}h ${m}m ${s}s`
+}
 
 cmd({
     pattern: "alive",
@@ -10,29 +22,42 @@ cmd({
 async (conn, mek, m, {
     from,
     pushname,
+    sender,
     reply
 }) => {
     try {
 
-        const aliveMsg = `
-╭━━━〔 🤖 BOT ALIVE 〕━━━⬣
+        const up = runtime(process.uptime())
+        const time = new Date().toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata"
+        })
+
+        const aliveText = `
+╭━━━〔 ✦ NICK MD ✦ 〕━━━⬣
+┃
 ┃ 👤 User : ${pushname}
+┃ 🤖 Bot : Nick MD
 ┃ ⚡ Status : Online
-┃ 🚀 Bot : Nick MD
-┃ 💚 Mode : Working
+┃ 💎 Mode : Public
+┃ ⏰ Runtime : ${up}
+┃ 📅 Time : ${time}
+┃ 📱 Prefix : ${config.PREFIX}
+┃
 ╰━━━━━━━━━━━━━━⬣
+
+> 🚀 Premium WhatsApp Bot Running Successfully
 `;
 
         await conn.sendMessage(
             from,
             {
                 image: {
-                    url: "https://xenocdn.xenocdn.workers.dev/265d504c.jpeg"
+                    url: config.ALIVE_IMG
                 },
-                caption: aliveMsg
+                caption: aliveText
             },
             { quoted: mek }
-        );
+        )
 
     } catch (e) {
         console.log(e)
