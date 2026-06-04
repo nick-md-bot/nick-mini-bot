@@ -1,4 +1,3 @@
-const config = require('../config')
 const { cmd } = require('../command')
 const fetch = require('node-fetch')
 
@@ -9,25 +8,19 @@ cmd({
     react: "📥",
     filename: __filename
 },
-async (conn, mek, m, {
-    from,
-    q,
-    reply
-}) => {
+async (conn, mek, m, { from, q, reply }) => {
     try {
 
-        if (!q) {
-            return reply("*Example: .insta https://www.instagram.com/reel/xxxxx/*")
-        }
+        if (!q) return reply("*Send Instagram URL*")
 
         const res = await fetch(
-            `${config.API}/api/downloader/igdl?url=${encodeURIComponent(q)}`
+            `https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(q)}`
         )
 
         const data = await res.json()
 
-        if (!data.status || !data.data.length) {
-            return reply("*No media found!*")
+        if (!data.status) {
+            return reply("*Download Failed!*")
         }
 
         for (const media of data.data) {
