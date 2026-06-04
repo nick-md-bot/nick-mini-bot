@@ -42,9 +42,9 @@ async (conn, mek, m, { from, pushname, reply }) => {
         await conn.sendMessage(
             from,
             {
-                video: { url: config.MENU_VIDEO },
-                caption: menu,
-                gifPlayback: false
+                video: { url: config.MENU_GIF },
+                gifPlayback: true,
+                caption: menu
             },
             { quoted: mek }
         )
