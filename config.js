@@ -3,6 +3,6 @@ module.exports = {
     AUTO_READ_STATUS: true,
     AUTO_REACT: false,
     AUTO_TYPING: false,
-    ALIVE_IMG: "https://files.catbox.moe/9wq6zv.jpg",
+    ALIVE_IMG: "https://xenocdn.xenocdn.workers.dev/265d504c.jpeg",
     REACT_EMOJIS: ['❤','💕','😻','🧡','💛','💚','💙','💜','🎉','👋']
 };
