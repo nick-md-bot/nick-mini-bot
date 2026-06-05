@@ -1,5 +1,4 @@
 const { cmd } = require('../command')
-const axios = require('axios') // Axios മോഡ്യൂൾ ആവശ്യമാണ്
 
 function runtime(seconds) {
     seconds = Number(seconds)
@@ -60,17 +59,14 @@ async (conn, mek, m, {
             { quoted: mek }
         );
 
-        // നിങ്ങളുടെ വർക്കിംഗ് ലിങ്ക് ബഫർ ആയി ഡൗൺലോഡ് ചെയ്യുന്നു
-        const audioUrl = "https://files.catbox.moe/hdwxp4.mp4"
-        const response = await axios.get(audioUrl, { responseType: 'arraybuffer' })
-        const audioBuffer = Buffer.from(response.data, 'binary')
-
-        // Alive Audio (ഇത് വോയ്‌സ് നോട്ട് ആയി തന്നെ പ്ലേ ചെയ്യും)
+        // നിങ്ങളുടെ വീഡിയോയിൽ നിന്നുള്ള ഓഡിയോ മാത്രം വേർതിരിച്ചെടുത്ത ഒറിജിനൽ MP3 ലിങ്ക്
         await conn.sendMessage(
             from,
             {
-                audio: audioBuffer,
-                mimetype: 'audio/mpeg', // WhatsApp ഇതിനെ ഓഡിയോ ആയി മാറ്റിക്കോളും
+                audio: {
+                    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // നിങ്ങളുടെ ഓഡിയോ കൺവർട്ട് ചെയ്ത പുതിയ ലിങ്ക്
+                },
+                mimetype: 'audio/mpeg',
                 ptt: true
             },
             { quoted: mek }
