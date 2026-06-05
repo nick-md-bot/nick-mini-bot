@@ -59,14 +59,14 @@ async (conn, mek, m, {
             { quoted: mek }
         );
 
-        // Alive Audio (ഇപ്പോൾ ഇതൊരു പെർഫെക്റ്റ് MP3 ഓഡിയോ ആയി മാറിയിട്ടുണ്ട്)
+        // Alive Audio (യഥാർത്ഥ MP3 ലിങ്ക് - ഇത് കൃത്യമായി വർക്ക് ചെയ്യും)
         await conn.sendMessage(
             from,
             {
                 audio: {
-                    url: "https://files.catbox.moe/hdwxp4.mp4"
+                    url: "https://files.catbox.moe/k27w88.mp3"
                 },
-                mimetype: 'audio/mpeg', // ഇവിടെ audio/mpeg ആക്കിയത് കൊണ്ട് WhatsApp ഇതിനെ ഓഡിയോ ആയി തന്നെ എടുക്കും
+                mimetype: 'audio/mpeg',
                 ptt: true
             },
             { quoted: mek }
