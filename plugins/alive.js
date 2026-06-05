@@ -1,15 +1,13 @@
-const config = require('../config')
 const { cmd } = require('../command')
 
 function runtime(seconds) {
     seconds = Number(seconds)
-
     const d = Math.floor(seconds / (3600 * 24))
     const h = Math.floor(seconds % (3600 * 24) / 3600)
     const m = Math.floor(seconds % 3600 / 60)
     const s = Math.floor(seconds % 60)
 
-    return `${d}d ${h}h ${m}m ${s}s`
+    return [d + "d", h + "h", m + "m", s + "s"].join(" ")
 }
 
 cmd({
@@ -21,46 +19,52 @@ cmd({
 },
 async (conn, mek, m, {
     from,
-    pushname,
-    sender,
-    reply
+    pushname
 }) => {
     try {
 
-        const up = runtime(process.uptime())
-        const time = new Date().toLocaleString("en-IN", {
-            timeZone: "Asia/Kolkata"
-        })
+        const groups =
+            Object.keys(conn.groupMetadata || {}).length || "Private"
 
-        const aliveText = `
-╭━━━〔 ✦ NICK MD ✦ 〕━━━⬣
-┃
-┃ 👤 User : ${pushname}
-┃ 🤖 Bot : Nick MD
-┃ ⚡ Status : Online
-┃ 💎 Mode : Public
-┃ ⏰ Runtime : ${up}
-┃ 📅 Time : ${time}
-┃ 📱 Prefix : ${config.PREFIX}
-┃
-╰━━━━━━━━━━━━━━⬣
+        const aliveMsg = `
+╭━━━〔 🌿 NICK XD MD 🌿 〕━━━⬣
 
-> 🚀 Premium WhatsApp Bot Running Successfully
+ツ *ʙᴏᴛ ɴᴀᴍᴇ* : NICK XD MD
+
+ツ *ᴜsᴇʀ* : ${pushname}
+
+ツ *ɢʀᴏᴜᴘs* : ${groups}
+
+ツ *ᴘʟᴀᴛғᴏʀᴍ* : Nick Sarovar!!🪀
+
+ツ *ɴᴏᴅᴇ ᴠᴇʀsɪᴏɴ* : ${process.version}
+
+ツ *ᴜᴘᴛɪᴍᴇ* : ${runtime(process.uptime())}
+
+ツ *ᴏᴡɴᴇʀ* : @${conn.user.id.split(":")[0]}
+
+ツ *sᴛᴀᴛᴜs* : Online....!!🏃🏻
+
+ツ *ᴍᴏᴅᴇ* : Public
+
+ツ *ʙɪᴏ* : NICK XD 🪻🌿🤍
+
+╰━━━━━━━━━━━━━━━━⬣
 `;
 
         await conn.sendMessage(
             from,
             {
                 image: {
-                    url: config.ALIVE_IMG
+                    url: "https://xenocdn.xenocdn.workers.dev/265d504c.jpeg"
                 },
-                caption: aliveText
+                caption: aliveMsg,
+                mentions: [conn.user.id]
             },
             { quoted: mek }
         )
 
     } catch (e) {
         console.log(e)
-        reply(`${e}`)
     }
 })
