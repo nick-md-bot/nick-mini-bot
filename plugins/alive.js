@@ -27,21 +27,21 @@ async (conn, mek, m, {
             Object.keys(conn.groupMetadata || {}).length || "Private"
 
         const aliveMsg = `
-╭━━━〔 🌿 NICK XD MD 🌿 〕━━━⬣
+╭━━━〔 🌼  𝜨𝜾𝚌𝜿 𝜧𝜹 𝜝𝝄т 🌼 〕━━━⬣
 
-ツ *ʙᴏᴛ ɴᴀᴍᴇ* : NICK XD MD
+ツ *ʙᴏᴛ ɴᴀᴍᴇ* : 𝜨𝜾𝚌𝜿 𝜧𝜹 𝜝𝝄т🐦🤍
 
 ツ *ᴜsᴇʀ* : ${pushname}
 
 ツ *ɢʀᴏᴜᴘs* : ${groups}
 
-ツ *ᴘʟᴀᴛғᴏʀᴍ* : Nick Sarovar!!🪀
+ツ *ᴘʟᴀᴛғᴏʀᴍ* : Nick Server!!🪀
 
 ツ *ɴᴏᴅᴇ ᴠᴇʀsɪᴏɴ* : ${process.version}
 
 ツ *ᴜᴘᴛɪᴍᴇ* : ${runtime(process.uptime())}
 
-ツ *ᴏᴡɴᴇʀ* : @${conn.user.id.split(":")[0]}
+ツ *ᴏᴡɴᴇʀ* : 𝄟⃟⃟≛⃝⃭⃗🇵🇱♡𝙈ᷟ𝙤ᷳ𝙣ᷡ𝙟𝙖ᷧ𝙣ᷡ 𝙉ᷡ𝙞𝙘ᷗ𝙠ᷜ♡𝄠⃟★
 
 ツ *sᴛᴀᴛᴜs* : Online....!!🏃🏻
 
