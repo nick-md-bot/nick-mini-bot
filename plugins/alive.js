@@ -7,7 +7,7 @@ function runtime(seconds) {
     const m = Math.floor(seconds % 3600 / 60)
     const s = Math.floor(seconds % 60)
 
-    return [d + "d", h + "h", m + "m", s + "s"].join(" ")
+    return `${d}d ${h}h ${m}m ${s}s`
 }
 
 cmd({
@@ -19,31 +19,25 @@ cmd({
 },
 async (conn, mek, m, {
     from,
-    pushname
+    pushname,
+    reply
 }) => {
     try {
-
-        const groups =
-            Object.keys(conn.groupMetadata || {}).length || "Private"
 
         const aliveMsg = `
 ╭━━━〔 🌼  𝜨𝜾𝚌𝜿 𝜧𝜹 𝜝𝝄т 🌼 〕━━━⬣
 
-ツ *ʙᴏᴛ ɴᴀᴍᴇ* : 𝜨𝜾𝚌𝜿 𝜧𝜹 𝜝𝝄т🐦🤍
+ツ *ʙᴏᴛ ɴᴀᴍᴇ* :  𝜨𝜾𝚌𝜿 𝜧𝜹 𝜝𝝄т 🐦🤍
 
 ツ *ᴜsᴇʀ* : ${pushname}
 
-ツ *ɢʀᴏᴜᴘs* : ${groups}
-
-ツ *ᴘʟᴀᴛғᴏʀᴍ* : Nick Server!!🪀
-
-ツ *ɴᴏᴅᴇ ᴠᴇʀsɪᴏɴ* : ${process.version}
+ツ *мᴏᴅᴇ ᴠᴇʀsɪᴏɴ* : ${process.version}
 
 ツ *ᴜᴘᴛɪᴍᴇ* : ${runtime(process.uptime())}
 
-ツ *ᴏᴡɴᴇʀ* : 𝄟⃟⃟≛⃝⃭⃗🇵🇱♡𝙈ᷟ𝙤ᷳ𝙣ᷡ𝙟𝙖ᷧ𝙣ᷡ 𝙉ᷡ𝙞𝙘ᷗ𝙠ᷜ♡𝄠⃟★
+ツ *ᴏᴡɴᴇʀ* : 𓍢ִ໋͙֒𓋜𝛞𝖎𝐜𝛋🍇•𔘓°𓍯𓂃
 
-ツ *sᴛᴀᴛᴜs* : Online....!!🏃🏻
+ツ *sᴛᴀᴛᴜs* : Online ✅
 
 ツ *ᴍᴏᴅᴇ* : Public
 
@@ -52,6 +46,7 @@ async (conn, mek, m, {
 ╰━━━━━━━━━━━━━━━━⬣
 `;
 
+        // Alive Image
         await conn.sendMessage(
             from,
             {
@@ -62,9 +57,23 @@ async (conn, mek, m, {
                 mentions: [conn.user.id]
             },
             { quoted: mek }
-        )
+        );
+
+        // Alive Audio (URL വഴി നേരിട്ട് ഓഡിയോ അയക്കുന്നു)
+        await conn.sendMessage(
+            from,
+            {
+                audio: {
+                    url: "https://xenocdn.xenocdn.workers.dev/2040c9ef.mpeg"
+                },
+                mimetype: 'audio/mpeg',
+                ptt: true
+            },
+            { quoted: mek }
+        );
 
     } catch (e) {
         console.log(e)
+        reply(`❌ Error: ${e.message}`)
     }
 })
