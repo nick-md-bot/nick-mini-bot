@@ -37,7 +37,7 @@ async (conn, mek, m, { from, pushname }) => {
             caption: aliveMsg,
             contextInfo: { mentionedJid: [botJid] }
         }, { quoted: mek });
-        const audioUrl = "https://xenocdn.xenocdn.workers.dev/f861a079.ogg";
+        const audioUrl = "https://xenocdn.xenocdn.workers.dev/1466d2aa.mp3";
         const response = await fetch(audioUrl);
         
         if (!response.ok) throw new Error(`Sorry: ${response.status}`);
