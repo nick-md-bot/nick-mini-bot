@@ -33,12 +33,14 @@ async (conn, mek, m, { from, pushname }) => {
 
 ╰━━━━━━━━━━━━━━━━⬣`;
 
+        // 1. Send Image
         await conn.sendMessage(from, {
             image: { url: "https://xenocdn.xenocdn.workers.dev/265d504c.jpeg" },
             caption: aliveMsg,
             contextInfo: { mentionedJid: [botJid] }
         }, { quoted: mek });
 
+        // 2. Random Audio Selection
         const audioUrls = [
             "https://xenocdn.xenocdn.workers.dev/ece11cc3.opus",
             "https://xenocdn.xenocdn.workers.dev/a55bc847.opus",
@@ -48,23 +50,25 @@ async (conn, mek, m, { from, pushname }) => {
             "https://xenocdn.xenocdn.workers.dev/75cd4aac.opus",
             "https://xenocdn.xenocdn.workers.dev/bb407cc9.opus"
         ];
+        
         const randomAudio = audioUrls[Math.floor(Math.random() * audioUrls.length)];
         const response = await fetch(randomAudio, {
             headers: { 'User-Agent': 'Mozilla/5.0' }
         });
         
-        if (!response.ok) throw new Error(`Audio fetch failed: ${response.status}`);
+        if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
         
-        const audioBuffer = Buffer.from(await response.arrayBuffer());
-
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = Buffer.from(arrayBuffer);
         await conn.sendMessage(from, {
             audio: audioBuffer,
             mimetype: 'audio/ogg; codecs=opus',
-            ptt: true
+            ptt: true,
+            waveform: new Uint8Array([0, 99, 0, 99, 0, 99, 0, 99, 0, 99])
         }, { quoted: mek });
 
     } catch (e) {
-        console.error("Alive Error:", e);
+        console.error("Alive Command Error:", e);
         return await conn.sendMessage(from, { text: `*Error:* ${e.message}` }, { quoted: mek });
     }
 });
