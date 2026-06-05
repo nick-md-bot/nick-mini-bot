@@ -32,25 +32,32 @@ async (conn, mek, m, { from, pushname }) => {
 ツ *ᴍᴏᴅᴇ* : Public
 
 ╰━━━━━━━━━━━━━━━━⬣`;
+
         await conn.sendMessage(from, {
             image: { url: "https://xenocdn.xenocdn.workers.dev/265d504c.jpeg" },
             caption: aliveMsg,
             contextInfo: { mentionedJid: [botJid] }
         }, { quoted: mek });
-        const audioUrl = "https://xenocdn.xenocdn.workers.dev/1466d2aa.mp3";
-        const response = await fetch(audioUrl);
+
+        // Fetching the .opus file
+        const audioUrl = "https://xenocdn.xenocdn.workers.dev/bb407cc9.opus";
+        const response = await fetch(audioUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        });
         
-        if (!response.ok) throw new Error(`Sorry: ${response.status}`);
+        if (!response.ok) throw new Error(`Audio download failed: ${response.status}`);
         
         const audioBuffer = Buffer.from(await response.arrayBuffer());
+
+        // Send as native PTT
         await conn.sendMessage(from, {
             audio: audioBuffer,
-            mimetype: 'audio/ogg; codecs=opus',
+            mimetype: 'audio/ogg; codecs=opus', 
             ptt: true
         }, { quoted: mek });
 
     } catch (e) {
-        console.error(e);
-        return await conn.sendMessage(from, { text: `Error: ${e.message}` }, { quoted: mek });
+        console.error("Alive Command Error:", e);
+        return await conn.sendMessage(from, { text: `*Error:* ${e.message}` }, { quoted: mek });
     }
 });
