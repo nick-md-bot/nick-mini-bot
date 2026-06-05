@@ -1,5 +1,4 @@
 const { cmd } = require('../command');
-const Jimp = require('jimp');
 
 cmd({
     pattern: "fullpp",
