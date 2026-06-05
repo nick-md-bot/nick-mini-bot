@@ -1,4 +1,7 @@
 const { cmd } = require('../command')
+const fs = require('fs')
+const Axios = require('axios')
+const path = require('path')
 
 function runtime(seconds) {
     seconds = Number(seconds)
@@ -46,7 +49,7 @@ async (conn, mek, m, {
 ╰━━━━━━━━━━━━━━━━⬣
 `;
 
-        // Alive Image
+        // 1. Alive Image അയക്കുന്നു
         await conn.sendMessage(
             from,
             {
@@ -59,18 +62,39 @@ async (conn, mek, m, {
             { quoted: mek }
         );
 
-        // നിങ്ങളുടെ വീഡിയോയിൽ നിന്നുള്ള ഓഡിയോ മാത്രം വേർതിരിച്ചെടുത്ത ഒറിജിനൽ MP3 ലിങ്ക്
-        await conn.sendMessage(
-            from,
-            {
-                audio: {
-                    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // നിങ്ങളുടെ ഓഡിയോ കൺവർട്ട് ചെയ്ത പുതിയ ലിങ്ക്
+        // 2. താൽക്കാലികമായി ഓഡിയോ ഫയൽ ഡൗൺലോഡ് ചെയ്യാൻ ഉള്ള വഴി
+        const audioUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        const tempPath = path.join(__dirname, 'temp_alive.mp3')
+
+        const writer = fs.createWriteStream(tempPath)
+        const response = await Axios({
+            url: audioUrl,
+            method: 'GET',
+            responseType: 'stream'
+        })
+
+        response.data.pipe(writer)
+
+        writer.on('finish', async () => {
+            // ഡൗൺലോഡ് പൂർത്തിയായ ശേഷം വാട്സാപ്പിലേക്ക് അയക്കുന്നു
+            await conn.sendMessage(
+                from,
+                {
+                    audio: fs.readFileSync(tempPath), // ലോക്കൽ ഫയൽ ആയതുകൊണ്ട് 100% വർക്ക് ചെയ്യും
+                    mimetype: 'audio/mpeg',
+                    ptt: true
                 },
-                mimetype: 'audio/mpeg',
-                ptt: true
-            },
-            { quoted: mek }
-        );
+                { quoted: mek }
+            );
+
+            // അയച്ചതിന് ശേഷം ബോട്ടിന്റെ മെമ്മറിയിൽ നിന്ന് ആ താൽക്കാലിക ഫയൽ ഡിലീറ്റ് ചെയ്യുന്നു
+            fs.unlinkSync(tempPath)
+        })
+
+        writer.on('error', (err) => {
+            console.error("Audio download error:", err)
+            reply("❌ Audio ഡൗൺലോഡ് ചെയ്യുന്നതിൽ പ്രശ്നം!")
+        })
 
     } catch (e) {
         console.log(e)
