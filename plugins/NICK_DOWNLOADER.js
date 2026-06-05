@@ -229,37 +229,65 @@ async (conn, mek, m, { from, prefix, q, reply }) => {
 // ======================== INSTAGRAM DOWNLOADER ========================
 cmd({
     pattern: "insta",
-    alias: ["ig"],
-    desc: "Download Instagram reels/videos/images.",
+    alias: ["ig", "instagram"],
+    desc: "Download Instagram reels, videos, photos and carousel posts.",
     category: "downloader",
     react: "📸",
     filename: __filename
 },
-async (conn, mek, m, { from, prefix, q, reply }) => {
+async (conn, mek, m, { from, q, prefix, reply }) => {
     try {
-        if (!q) return await reply(`Example: ${prefix}insta <url>`);
-        if (!q.includes("instagram.com")) return await reply("Invalid Instagram URL!");
-
-        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/igdl?url=${encodeURIComponent(q)}`;
-        const { data: res } = await axios.get(apiUrl);
-
-        if (!res.status || !res.data || res.data.length === 0) {
-            return await reply("No media found!");
+        if (!q) {
+            return reply(`Example:\n${prefix}insta https://www.instagram.com/reel/xxxxx/`);
         }
 
-        // Using the first media found as per the snippet logic
-        const media = res.data[0];
-        const url = media.url;
+        if (!q.includes("instagram.com")) {
+            return reply("❌ Please provide a valid Instagram URL.");
+        }
 
-        // Determine if it's a video or image based on API response type
-        const type = media.type === 'video' ? 'video' : 'image';
+        await conn.sendMessage(from, {
+            react: { text: "⏳", key: mek.key }
+        });
 
-        await conn.sendMessage(from, { [type]: { url: url }, caption: "ɴɪᴄᴋ ᴍᴅ ᴍɪɴɪ 🪀" }, { quoted: mek });
-    } catch (e) {
-        console.error(e);
-        await reply("Error downloading. Make sure the link is public.");
+        const api = `https://api-aswin-sparky.koyeb.app/api/downloader/igdl?url=${encodeURIComponent(q)}`;
+
+        const { data } = await axios.get(api);
+
+        if (!data.status || !data.data || data.data.length < 1) {
+            await conn.sendMessage(from, {
+                react: { text: "❌", key: mek.key }
+            });
+            return reply("No media found.");
+        }
+
+        for (const media of data.data) {
+            if (media.type === "video") {
+                await conn.sendMessage(from, {
+                    video: { url: media.url },
+                    caption: "📥 Downloaded by NICK XD 🪻🌿🤍"
+                }, { quoted: mek });
+            } else {
+                await conn.sendMessage(from, {
+                    image: { url: media.url },
+                    caption: "📥 Downloaded by NICK XD 🪻🌿🤍"
+                }, { quoted: mek });
+            }
+        }
+
+        await conn.sendMessage(from, {
+            react: { text: "✅", key: mek.key }
+        });
+
+    } catch (err) {
+        console.error("Instagram Error:", err?.response?.data || err.message);
+
+        await conn.sendMessage(from, {
+            react: { text: "❌", key: mek.key }
+        });
+
+        reply("Failed to download Instagram media. Make sure the post is public.");
     }
-})
+});
 
 // ======================== SPOTIFY DOWNLOADER ========================
 cmd({
