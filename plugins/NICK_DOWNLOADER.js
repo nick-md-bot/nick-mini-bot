@@ -250,9 +250,8 @@ async (conn, mek, m, { from, q, prefix, reply }) => {
         });
 
         const api = `https://api-aswin-sparky.koyeb.app/api/downloader/igdl?url=${encodeURIComponent(q)}`;
-        const { data } = await axios.get(api);
 
-        console.log(JSON.stringify(data, null, 2));
+        const { data } = await axios.get(api);
 
         if (!data.status || !data.data || data.data.length < 1) {
             await conn.sendMessage(from, {
@@ -262,26 +261,15 @@ async (conn, mek, m, { from, q, prefix, reply }) => {
         }
 
         for (const media of data.data) {
-
-            const igCaption =
-                media.caption ||
-                data.caption ||
-                "📥 Downloaded by NICK XD 🪻🌿🤍";
-
-            const caption = `🪻 NICK XD 🌿🤍
-
-${igCaption}`;
-
             if (media.type === "video") {
                 await conn.sendMessage(from, {
                     video: { url: media.url },
-                    caption
+                    caption: "📥 Downloaded by NICK XD 🪻🌿🤍"
                 }, { quoted: mek });
-
             } else {
                 await conn.sendMessage(from, {
                     image: { url: media.url },
-                    caption
+                    caption: "📥 Downloaded by NICK XD 🪻🌿🤍"
                 }, { quoted: mek });
             }
         }
