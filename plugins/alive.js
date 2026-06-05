@@ -26,12 +26,10 @@ async (conn, mek, m, { from, pushname }) => {
 
 ツ *ʙᴏᴛ ɴᴀᴍᴇ* : NICK XD MD
 ツ *ᴜsᴇʀ* : ${pushname}
-ツ *ɴᴏᴅᴇ ᴠᴇʀsɪᴏɴ* : ${process.version}
 ツ *ᴜᴘᴛɪᴍᴇ* : ${runtime(process.uptime())}
 ツ *ᴏᴡɴᴇʀ* : @${botJid.split('@')[0]}
 ツ *sᴛᴀᴛᴜs* : Online ✅
 ツ *ᴍᴏᴅᴇ* : Public
-ツ *ʙɪᴏ* : NICK XD 🪻🌿🤍
 
 ╰━━━━━━━━━━━━━━━━⬣`;
         await conn.sendMessage(from, {
@@ -39,17 +37,16 @@ async (conn, mek, m, { from, pushname }) => {
             caption: aliveMsg,
             contextInfo: { mentionedJid: [botJid] }
         }, { quoted: mek });
-
-        const audioUrl = "https://xenocdn.xenocdn.workers.dev/1466d2aa.mp3";
+        const audioUrl = "https://xenocdn.xenocdn.workers.dev/f861a079.ogg";
         const response = await fetch(audioUrl);
         
-        if (!response.ok) throw new Error(`Audio download failed: ${response.status}`);
+        if (!response.ok) throw new Error(`Sorry: ${response.status}`);
         
         const audioBuffer = Buffer.from(await response.arrayBuffer());
-
         await conn.sendMessage(from, {
             audio: audioBuffer,
-            mimetype: 'audio/mpeg'
+            mimetype: 'audio/ogg; codecs=opus',
+            ptt: true
         }, { quoted: mek });
 
     } catch (e) {
