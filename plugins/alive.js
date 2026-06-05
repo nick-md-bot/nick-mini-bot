@@ -1,7 +1,5 @@
-const { cmd } = require('../command')
-const fs = require('fs')
-const Axios = require('axios')
-const path = require('path')
+const config = require('../config')
+const { cmd, commands } = require('../command')
 
 function runtime(seconds) {
     seconds = Number(seconds)
@@ -20,11 +18,7 @@ cmd({
     react: "🤖",
     filename: __filename
 },
-async (conn, mek, m, {
-    from,
-    pushname,
-    reply
-}) => {
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
 
         const aliveMsg = `
@@ -62,42 +56,28 @@ async (conn, mek, m, {
             { quoted: mek }
         );
 
-        // 2. താൽക്കാലികമായി ഓഡിയോ ഫയൽ ഡൗൺലോഡ് ചെയ്യാൻ ഉള്ള വഴി
+        // 2. Node.js-ന്റെ സ്വന്തം 'fetch' ഉപയോഗിച്ച് ഓഡിയോ Buffer ആയി എടുക്കുന്നു (Axios വേണ്ട)
         const audioUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-        const tempPath = path.join(__dirname, 'temp_alive.mp3')
+        const response = await fetch(audioUrl)
+        
+        if (!response.ok) throw new Error(`ഫയൽ ഡൗൺലോഡ് ചെയ്യാൻ പറ്റിയില്ല! Status: ${response.status}`)
+        
+        const arrayBuffer = await response.arrayBuffer()
+        const audioBuffer = Buffer.from(arrayBuffer)
 
-        const writer = fs.createWriteStream(tempPath)
-        const response = await Axios({
-            url: audioUrl,
-            method: 'GET',
-            responseType: 'stream'
-        })
-
-        response.data.pipe(writer)
-
-        writer.on('finish', async () => {
-            // ഡൗൺലോഡ് പൂർത്തിയായ ശേഷം വാട്സാപ്പിലേക്ക് അയക്കുന്നു
-            await conn.sendMessage(
-                from,
-                {
-                    audio: fs.readFileSync(tempPath), // ലോക്കൽ ഫയൽ ആയതുകൊണ്ട് 100% വർക്ക് ചെയ്യും
-                    mimetype: 'audio/mpeg',
-                    ptt: true
-                },
-                { quoted: mek }
-            );
-
-            // അയച്ചതിന് ശേഷം ബോട്ടിന്റെ മെമ്മറിയിൽ നിന്ന് ആ താൽക്കാലിക ഫയൽ ഡിലീറ്റ് ചെയ്യുന്നു
-            fs.unlinkSync(tempPath)
-        })
-
-        writer.on('error', (err) => {
-            console.error("Audio download error:", err)
-            reply("❌ Audio ഡൗൺലോഡ് ചെയ്യുന്നതിൽ പ്രശ്നം!")
-        })
+        // 3. Alive Audio (Voice note ആയി സെൻഡ് ചെയ്യുന്നു)
+        await conn.sendMessage(
+            from,
+            {
+                audio: audioBuffer,
+                mimetype: 'audio/mpeg',
+                ptt: true
+            },
+            { quoted: mek }
+        );
 
     } catch (e) {
         console.log(e)
-        reply(`❌ Error: ${e.message}`)
+        reply(`${e}`)
     }
 })
