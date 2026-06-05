@@ -1,5 +1,6 @@
 const { cmd } = require('../command');
 
+// Runtime function
 function runtime(seconds) {
     seconds = Number(seconds);
     const d = Math.floor(seconds / (3600 * 24));
@@ -47,20 +48,19 @@ async (conn, mek, m, { from, pushname }) => {
             "https://xenocdn.xenocdn.workers.dev/75cd4aac.opus",
             "https://xenocdn.xenocdn.workers.dev/bb407cc9.opus"
         ];
-        
         const randomAudio = audioUrls[Math.floor(Math.random() * audioUrls.length)];
         const response = await fetch(randomAudio, {
             headers: { 'User-Agent': 'Mozilla/5.0' }
         });
         
-        if (!response.ok) throw new Error(`Status ${response.status}`);
+        if (!response.ok) throw new Error(`Audio fetch failed: ${response.status}`);
         
-        const buffer = Buffer.from(await response.arrayBuffer());
+        const audioBuffer = Buffer.from(await response.arrayBuffer());
+
         await conn.sendMessage(from, {
-            audio: buffer,
+            audio: audioBuffer,
             mimetype: 'audio/ogg; codecs=opus',
-            ptt: true,
-    
+            ptt: true
         }, { quoted: mek });
 
     } catch (e) {
