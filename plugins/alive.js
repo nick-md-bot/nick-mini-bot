@@ -1,4 +1,5 @@
 const { cmd } = require('../command')
+const axios = require('axios') // Axios മോഡ്യൂൾ ആവശ്യമാണ്
 
 function runtime(seconds) {
     seconds = Number(seconds)
@@ -59,13 +60,16 @@ async (conn, mek, m, {
             { quoted: mek }
         );
 
-        // Alive Audio (യഥാർത്ഥ MP3 ലിങ്ക് - ഇത് കൃത്യമായി വർക്ക് ചെയ്യും)
+        // ഓഡിയോ ലിങ്ക് Buffer ആയി ഡൗൺലോഡ് ചെയ്യുന്നു (Stream Error വരാതിരിക്കാൻ)
+        const audioUrl = "https://files.catbox.moe/k27w88.mp3"
+        const response = await axios.get(audioUrl, { responseType: 'arraybuffer' })
+        const audioBuffer = Buffer.from(response.data, 'binary')
+
+        // Alive Audio 
         await conn.sendMessage(
             from,
             {
-                audio: {
-                    url: "https://files.catbox.moe/k27w88.mp3"
-                },
+                audio: audioBuffer, // ഇതാണ് ഡൗൺലോഡ് ചെയ്ത ഓഡിയോ ഫയൽ
                 mimetype: 'audio/mpeg',
                 ptt: true
             },
