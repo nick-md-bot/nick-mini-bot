@@ -25,17 +25,17 @@ async (conn, mek, m, {
     try {
 
         const aliveMsg = `
-╭━━━〔 🌼  𝜨𝜾𝚌𝜿 𝜧𝜹 𝜝𝝄т 🌼 〕━━━⬣
+╭━━━〔 🌿 NICK XD MD 🌿 〕━━━⬣
 
-ツ *ʙᴏᴛ ɴᴀᴍᴇ* :  𝜨𝜾𝚌𝜿 𝜧𝜹 𝜝𝝄т 🐦🤍
+ツ *ʙᴏᴛ ɴᴀᴍᴇ* : NICK XD MD
 
 ツ *ᴜsᴇʀ* : ${pushname}
 
-ツ *мᴏᴅᴇ ᴠᴇʀsɪᴏɴ* : ${process.version}
+ツ *ɴᴏᴅᴇ ᴠᴇʀsɪᴏɴ* : ${process.version}
 
 ツ *ᴜᴘᴛɪᴍᴇ* : ${runtime(process.uptime())}
 
-ツ *ᴏᴡɴᴇʀ* : 𓍢ִ໋͙֒𓋜𝛞𝖎𝐜𝛋🍇•𔘓°𓍯𓂃
+ツ *ᴏᴡɴᴇʀ* : @${conn.user.id.split(':')[0]}
 
 ツ *sᴛᴀᴛᴜs* : Online ✅
 
@@ -59,14 +59,14 @@ async (conn, mek, m, {
             { quoted: mek }
         );
 
-        // Alive Audio (URL വഴി നേരിട്ട് ഓഡിയോ അയക്കുന്നു)
+        // Alive Audio (ഇപ്പോൾ ഇതൊരു പെർഫെക്റ്റ് MP3 ഓഡിയോ ആയി മാറിയിട്ടുണ്ട്)
         await conn.sendMessage(
             from,
             {
                 audio: {
-                    url: "https://xenocdn.xenocdn.workers.dev/2040c9ef.mpeg"
+                    url: "https://files.catbox.moe/hdwxp4.mp4"
                 },
-                mimetype: 'audio/mpeg',
+                mimetype: 'audio/mpeg', // ഇവിടെ audio/mpeg ആക്കിയത് കൊണ്ട് WhatsApp ഇതിനെ ഓഡിയോ ആയി തന്നെ എടുക്കും
                 ptt: true
             },
             { quoted: mek }
