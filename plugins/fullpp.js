@@ -1,66 +1,37 @@
-const { cmd } = require('../command');
+const { cmd } = require("../command");
 
 cmd({
     pattern: "fullpp",
-    desc: "Set full screen profile picture",
+    desc: "Set profile picture",
     category: "owner",
     react: "🖼️",
     filename: __filename
 },
-async (conn, mek, m, { from, reply }) => {
+async (conn, mek, m, { reply }) => {
     try {
+        const quoted = m.quoted ? m.quoted : mek.quoted;
 
-        if (!mek.quoted) {
+        if (!quoted) {
             return reply("❌ Reply to an image.");
         }
 
-        const quoted = mek.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+        const mime = quoted.mimetype || quoted.msg?.mimetype || "";
 
-        if (!quoted?.imageMessage) {
+        if (!mime.startsWith("image")) {
             return reply("❌ Reply to a photo.");
         }
 
-        const buffer = await conn.downloadMediaMessage(mek.quoted);
+        const buffer = await quoted.download();
 
-        const { img } = await generateProfilePicture(buffer);
-
-        await conn.query({
-            tag: "iq",
-            attrs: {
-                to: conn.user.id,
-                type: "set",
-                xmlns: "w:profile:picture",
-            },
-            content: [{
-                tag: "picture",
-                attrs: { type: "image" },
-                content: img,
-            }],
-        });
+        await conn.updateProfilePicture(
+            conn.user.id,
+            buffer
+        );
 
         return reply("✅ Profile Picture Updated Successfully.");
 
     } catch (err) {
-        console.error(err);
-        reply("❌ Failed to update profile picture.");
+        console.error("FULLPP ERROR:", err);
+        return reply(`❌ Failed to update profile picture.\n${err.message}`);
     }
 });
-
-async function generateProfilePicture(buffer) {
-    const jimp = await Jimp.read(buffer);
-
-    const min = jimp.getWidth();
-    const max = jimp.getHeight();
-
-    const cropped = jimp.crop(0, 0, min, max);
-
-    return {
-        img: await cropped
-            .scaleToFit(720, 720)
-            .getBufferAsync(Jimp.MIME_JPEG),
-
-        preview: await cropped
-            .normalize()
-            .getBufferAsync(Jimp.MIME_JPEG),
-    };
-}
