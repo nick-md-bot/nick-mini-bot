@@ -60,17 +60,17 @@ async (conn, mek, m, {
             { quoted: mek }
         );
 
-        // ഓഡിയോ ലിങ്ക് Buffer ആയി ഡൗൺലോഡ് ചെയ്യുന്നു (Stream Error വരാതിരിക്കാൻ)
-        const audioUrl = "https://files.catbox.moe/k27w88.mp3"
+        // നിങ്ങളുടെ വർക്കിംഗ് ലിങ്ക് ബഫർ ആയി ഡൗൺലോഡ് ചെയ്യുന്നു
+        const audioUrl = "https://files.catbox.moe/hdwxp4.mp4"
         const response = await axios.get(audioUrl, { responseType: 'arraybuffer' })
         const audioBuffer = Buffer.from(response.data, 'binary')
 
-        // Alive Audio 
+        // Alive Audio (ഇത് വോയ്‌സ് നോട്ട് ആയി തന്നെ പ്ലേ ചെയ്യും)
         await conn.sendMessage(
             from,
             {
-                audio: audioBuffer, // ഇതാണ് ഡൗൺലോഡ് ചെയ്ത ഓഡിയോ ഫയൽ
-                mimetype: 'audio/mpeg',
+                audio: audioBuffer,
+                mimetype: 'audio/mpeg', // WhatsApp ഇതിനെ ഓഡിയോ ആയി മാറ്റിക്കോളും
                 ptt: true
             },
             { quoted: mek }
