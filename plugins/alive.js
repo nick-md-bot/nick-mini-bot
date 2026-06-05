@@ -39,25 +39,32 @@ async (conn, mek, m, { from, pushname }) => {
             contextInfo: { mentionedJid: [botJid] }
         }, { quoted: mek });
 
-        // Fetching the .opus file
-        const audioUrl = "https://xenocdn.xenocdn.workers.dev/bb407cc9.opus";
-        const response = await fetch(audioUrl, {
+        const audioUrls = [
+            "https://xenocdn.xenocdn.workers.dev/ece11cc3.opus",
+            "https://xenocdn.xenocdn.workers.dev/a55bc847.opus",
+            "https://xenocdn.xenocdn.workers.dev/d12bb561.opus",
+            "https://xenocdn.xenocdn.workers.dev/a352d6a0.opus",
+            "https://xenocdn.xenocdn.workers.dev/229e0147.opus",
+            "https://xenocdn.xenocdn.workers.dev/75cd4aac.opus",
+            "https://xenocdn.xenocdn.workers.dev/bb407cc9.opus"
+        ];
+        const randomAudio = audioUrls[Math.floor(Math.random() * audioUrls.length)];
+        const response = await fetch(randomAudio, {
             headers: { 'User-Agent': 'Mozilla/5.0' }
         });
         
-        if (!response.ok) throw new Error(`Audio download failed: ${response.status}`);
+        if (!response.ok) throw new Error(`Audio fetch failed: ${response.status}`);
         
         const audioBuffer = Buffer.from(await response.arrayBuffer());
 
-        // Send as native PTT
         await conn.sendMessage(from, {
             audio: audioBuffer,
-            mimetype: 'audio/ogg; codecs=opus', 
+            mimetype: 'audio/ogg; codecs=opus',
             ptt: true
         }, { quoted: mek });
 
     } catch (e) {
-        console.error("Alive Command Error:", e);
+        console.error("Alive Error:", e);
         return await conn.sendMessage(from, { text: `*Error:* ${e.message}` }, { quoted: mek });
     }
 });
