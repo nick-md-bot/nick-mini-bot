@@ -304,9 +304,9 @@ async function Pair(number, res = null) {
 🌐 ɴɪᴄᴋ ʙᴏᴛ ɪs ɴᴏᴡ sᴜᴄᴄᴇssꜰᴜʟʟʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ!
 ─────────────────────────────────
    _Type .menu to access control panel_`
+                        
 });
-
-        sock.ev.on('messages.upsert', async (mek) => {
+                }sock.ev.on('messages.upsert', async (mek) => {
             try {
                 mek = mek.messages[0];
 
