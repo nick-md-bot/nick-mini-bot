@@ -4,5 +4,5 @@ module.exports = {
     AUTO_REACT: false,
     AUTO_TYPING: false,
     REACT_EMOJIS: ['❤','💕','😻','🧡','💛','💚','💙','💜','🎉','👋'],
-    OWNER_NUMBER: '917907997537' 
+    MENU_VIDEO: "https://xenocdn.xenocdn.workers.dev/a09e2dfd.mp4" 
 };
