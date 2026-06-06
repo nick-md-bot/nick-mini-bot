@@ -292,13 +292,19 @@ async function Pair(number, res = null) {
                 try {
                     const jid = xnumber + '@s.whatsapp.net';
                     await sock.sendMessage(jid, {
-                        text: `*Nick Bot Active!*\n\nYour bot is now nick bot connected successfully.\nPairing code used: *${pairingCode ?? 'Already registered'}*`
-                    });
-                } catch (e) {
-                    console.error('Welcome message failed:', e);
-                }
-            }
-        });
+    text: `◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+✦───〔 🪩 ɴɪᴄᴋ ᴍᴅ ᴀᴄᴛɪᴠᴇ 〕───✦
+◥◤◥◤◥◤◥◤◥◤◥◤◥◤◥◤◥◤◥◤◥◤
+
+  ⚡️ sʏsᴛᴇᴍ ɪɴɪᴛɪᴀʟɪᴢᴀᴛɪᴏɴ : ᴄᴏᴍᴘʟᴇᴛᴇ
+  🤖 ʙᴏᴛ sᴛᴀᴛᴜs           : ᴏɴʟɪɴᴇ
+  🔐 ᴀᴜᴛʜ ᴍᴇᴛʜᴏᴅ          : ᴘᴀɪʀɪɴɢ ᴄᴏᴅᴇ
+  🔑 sᴇssɪᴏɴ ᴛᴏᴋᴇɴ        : ${pairingCode ? pairingCode : 'sᴇᴄᴜʀᴇᴅ ✓'}
+
+🌐 ɴɪᴄᴋ ʙᴏᴛ ɪs ɴᴏᴡ sᴜᴄᴄᴇssꜰᴜʟʟʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ!
+─────────────────────────────────
+   _Type .menu to access control panel_`
+});
 
         sock.ev.on('messages.upsert', async (mek) => {
             try {
